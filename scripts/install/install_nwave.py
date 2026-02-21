@@ -540,28 +540,19 @@ def show_title_panel(logger: Logger, dry_run: bool = False) -> None:
     logger.print_styled("")
 
 
-_SUMMARY_WAVE = [
-    "",
-    "     ~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~",
-    "",
-    "      /nw:new        Start a new feature",
-    "      /nw:continue   Resume where you left off",
-    "      /nw:ff         Fast-forward all waves",
-    "",
-    "     ~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~",
-    "",
-]
-
-
 def show_installation_summary(logger: Logger) -> None:
     """Display installation summary panel at end of successful install."""
     logger.info("")
     logger.info(f"  🎉 nWave v{__version__} installed and healthy!")
     logger.info("")
     logger.info("  📖 Quick start")
-    logger.info("")
-    for line in _SUMMARY_WAVE:
-        logger.info(line)
+    commands = [
+        ("/nw:new", "Start a new feature (guided wizard)"),
+        ("/nw:continue", "Resume where you left off"),
+        ("/nw:ff", "Fast-forward through all waves"),
+    ]
+    for cmd, desc in commands:
+        logger.info(f"    {cmd:<16} {desc}")
     logger.info("")
     logger.info(
         "  💡 Open Claude Code in any project directory and type a /nw: command."
