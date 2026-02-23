@@ -201,6 +201,7 @@ Before declaring DELIVER wave complete:
 
 ## Related Documentation
 
+- **Principle**: Outside-In TDD: Step-to-Scenario Mapping - See the sections above for the discipline behind step-to-scenario mapping
 - **Reference**: [nWave Commands Reference](../reference/commands/index.md) - Complete command specifications
 - **Agent Specification**: See `~/.claude/agents/nw/solution-architect.md` for step generation details
 

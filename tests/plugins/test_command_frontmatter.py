@@ -26,7 +26,7 @@ EXPECTED_COMMANDS = sorted(
         "distill",
         "document",
         "execute",
-        "ff",
+        "fast-forward",
         "finalize",
         "forge",
         "mikado",
@@ -67,7 +67,7 @@ def _load_catalog_commands() -> dict:
 
 
 # ---------------------------------------------------------------------------
-# Acceptance test: all 21 command files have valid frontmatter
+# Acceptance test: all 18 command files have valid frontmatter
 # ---------------------------------------------------------------------------
 
 

@@ -32,12 +32,7 @@ Do NOT proceed until you have a clear, actionable description.
 
 ### Step 2: Project ID Derivation
 
-Derive a kebab-case project ID from the description:
-
-1. Strip common prefixes: "implement", "add", "create", "build"
-2. Remove English stop words: "a", "the", "to", "for", "with", "and", "in", "on", "of"
-3. Convert to kebab-case (lowercase, hyphens between words)
-4. Limit to 5 hyphenated segments maximum
+Derive a project ID following the rules in `~/.claude/nWave/data/wizard-shared-rules.md` (section: Project ID Derivation).
 
 Examples:
 - "Add rate limiting to the API gateway" → `rate-limiting-api-gateway`

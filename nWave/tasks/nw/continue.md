@@ -1,5 +1,5 @@
 ---
-description: "Detects current wave progress for a feature and resumes at the next step. Scans docs/feature/ for artifacts and shows a progress summary."
+description: "Detects current wave progress for a feature and resumes at the next step. Scans docs/feature/ for artifacts."
 argument-hint: "[project-id] - Optional: omit to auto-detect from docs/feature/"
 disable-model-invocation: true
 ---
@@ -49,18 +49,7 @@ Present the list using AskUserQuestion:
 
 ### Step 3: Wave Progress Detection
 
-For the selected project, check each wave's artifacts:
-
-| Wave | Complete When | In Progress When |
-|------|--------------|-----------------|
-| DISCOVER | `docs/discovery/problem-validation.md` AND `docs/discovery/lean-canvas.md` exist and are non-empty | `docs/discovery/` exists but required files missing or empty |
-| DISCUSS | `docs/feature/{id}/discuss/requirements.md` AND `docs/feature/{id}/discuss/user-stories.md` exist and are non-empty | `docs/feature/{id}/discuss/` exists but required files missing or empty |
-| DESIGN | `docs/feature/{id}/design/architecture-design.md` exists and is non-empty | `docs/feature/{id}/design/` exists but required file missing or empty |
-| DEVOP | `docs/feature/{id}/deliver/platform-architecture.md` exists and is non-empty | `docs/feature/{id}/deliver/` exists but platform-architecture.md missing or empty |
-| DISTILL | `docs/feature/{id}/distill/test-scenarios.md` exists and is non-empty | `docs/feature/{id}/distill/` exists but required file missing or empty |
-| DELIVER | `docs/feature/{id}/execution-log.yaml` with all roadmap steps at COMMIT/PASS | `execution-log.yaml` exists with some steps incomplete |
-
-"Not started" = neither directory nor required artifacts exist for that wave.
+For the selected project, check each wave's artifacts using the Wave Detection Rules in `~/.claude/nWave/data/wizard-shared-rules.md`.
 
 ### Step 4: Anomaly Detection
 

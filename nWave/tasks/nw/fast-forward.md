@@ -1,14 +1,14 @@
 ---
-description: "Fast-forwards through remaining waves end-to-end without stopping for review between waves. Use when scope is clear and you want to move fast."
+description: "Fast-forwards through remaining waves end-to-end without stopping for review between waves."
 argument-hint: '[feature-description] - Optional: --from=[discuss|design|devops|distill|deliver]'
 disable-model-invocation: true
 ---
 
-# NW-FF: Fast-Forward
+# NW-FAST-FORWARD: Fast-Forward
 
 **Wave**: CROSS_WAVE (entry point)
 **Agent**: Main Instance (self — orchestrator)
-**Command**: `/nw:ff`
+**Command**: `/nw:fast-forward`
 
 ## Overview
 
@@ -23,18 +23,15 @@ You (the main Claude instance) run this orchestration directly. Each wave is inv
 ### Step 1: Input Parsing
 
 Accept either:
-- A feature description (new project): `/nw:ff "Add rate limiting"`
-- A `--from` flag with optional project ID: `/nw:ff --from=distill rate-limiting`
+- A feature description (new project): `/nw:fast-forward "Add rate limiting"`
+- A `--from` flag with optional project ID: `/nw:fast-forward --from=distill rate-limiting`
 - No arguments (auto-detect from `docs/feature/`)
 
 ### Step 2: Project Resolution
 
 **If a feature description is provided (new project):**
 
-Derive project ID using the same rules as `/nw:new`:
-1. Strip prefixes: "implement", "add", "create", "build"
-2. Remove stop words: "a", "the", "to", "for", "with", "and", "in", "on", "of"
-3. Kebab-case, max 5 segments
+Derive project ID following the rules in `~/.claude/nWave/data/wizard-shared-rules.md` (section: Project ID Derivation).
 
 Show derived ID, allow override via AskUserQuestion.
 Create `docs/feature/{project-id}/` directory.
@@ -46,16 +43,7 @@ If multiple, ask user to select.
 
 ### Step 3: Detect Current Progress
 
-Check wave artifacts using the same detection rules as `/nw:continue`:
-
-| Wave | Complete When | In Progress When |
-|------|--------------|-----------------|
-| DISCOVER | `docs/discovery/problem-validation.md` AND `docs/discovery/lean-canvas.md` exist and are non-empty | `docs/discovery/` exists but required files missing or empty |
-| DISCUSS | `docs/feature/{id}/discuss/requirements.md` AND `docs/feature/{id}/discuss/user-stories.md` exist and are non-empty | `docs/feature/{id}/discuss/` exists but required files missing or empty |
-| DESIGN | `docs/feature/{id}/design/architecture-design.md` exists and is non-empty | `docs/feature/{id}/design/` exists but required file missing or empty |
-| DEVOP | `docs/feature/{id}/deliver/platform-architecture.md` exists and is non-empty | `docs/feature/{id}/deliver/` exists but platform-architecture.md missing or empty |
-| DISTILL | `docs/feature/{id}/distill/test-scenarios.md` exists and is non-empty | `docs/feature/{id}/distill/` exists but required file missing or empty |
-| DELIVER | `docs/feature/{id}/execution-log.yaml` with all roadmap steps at COMMIT/PASS | `execution-log.yaml` exists with some steps incomplete |
+Check wave artifacts using the Wave Detection Rules in `~/.claude/nWave/data/wizard-shared-rules.md`.
 
 ### Step 4: Determine Wave Sequence
 
@@ -179,24 +167,24 @@ When all waves complete:
 
 ### Example 1: Full fast-forward from scratch
 ```
-/nw:ff "Upgrade authentication to OAuth2"
+/nw:fast-forward "Upgrade authentication to OAuth2"
 ```
 Wizard derives `oauth2-upgrade`, detects no prior artifacts, shows plan: DISCUSS → DESIGN → DEVOPS → DISTILL → DELIVER. User confirms. All 5 waves execute in sequence.
 
 ### Example 2: Fast-forward from mid-pipeline
 ```
-/nw:ff
+/nw:fast-forward
 ```
 Wizard finds `notification-service` with DISCUSS complete. Shows plan: DESIGN → DEVOPS → DISTILL → DELIVER. User confirms. 4 waves execute.
 
 ### Example 3: Fast-forward with --from flag
 ```
-/nw:ff --from=distill rate-limiting
+/nw:fast-forward --from=distill rate-limiting
 ```
 Wizard validates DESIGN artifacts exist for `rate-limiting`. Shows plan: DISTILL → DELIVER. User confirms. 2 waves execute.
 
 ### Example 4: Fast-forward with failure
 ```
-/nw:ff "Add payment processing"
+/nw:fast-forward "Add payment processing"
 ```
 DISCUSS succeeds, DESIGN succeeds, DEVOPS fails. Pipeline stops. Shows error and suggests `/nw:continue` to resume from DEVOPS.
